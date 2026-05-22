@@ -26,11 +26,11 @@ async function main() {
   // Demo student
   const studentPass = await bcrypt.hash("demo123", 10);
   const student = await prisma.user.upsert({
-    where: { email: "kai@example.com" },
+    where: { email: "demo@bizquest.jp" },
     update: {},
     create: {
-      email: "kai@example.com",
-      name: "Kai",
+      email: "demo@bizquest.jp",
+      name: "BizQuest User",
       password: studentPass,
       university: "メルボルン大学",
       interests: JSON.stringify(["マーケティング", "起業家精神"]),
@@ -486,7 +486,7 @@ D) Company（自社）
 
   console.log("Seed completed!");
   console.log(`Admin: admin@bizquest.jp / admin123`);
-  console.log(`Student: kai@example.com / demo123`);
+  console.log(`Student: demo@bizquest.jp / demo123`);
   console.log({ admin: admin.id, student: student.id });
 }
 
