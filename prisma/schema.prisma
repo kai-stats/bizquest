@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  password     String
+  university   String?
+  bio          String?
+  interests    String?
+  avatarUrl    String?
+  points       Int      @default(0)
+  level        Int      @default(1)
+  streak       Int      @default(0)
+  lastActiveAt DateTime @default(now())
+  role         String   @default("student")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  submissions    Submission[]
+  lessonProgress LessonProgress[]
+}
+
+model Track {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  icon        String
+  color       String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          String   @id @default(cuid())
+  trackId     String
+  title       String
+  description String
+  content     String
+  duration    Int
+  order       Int      @default(0)
+  points      Int      @default(10)
+  createdAt   DateTime @default(now())
+
+  track       Track    @relation(fields: [trackId], references: [id])
+  progress    LessonProgress[]
+  challenges  ChallengeLesson[]
+}
+
+model LessonProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  quizScore   Int?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id])
+  lesson      Lesson    @relation(fields: [lessonId], references: [id])
+
+  @@unique([userId, lessonId])
+}
+
+model Challenge {
+  id               String    @id @default(cuid())
+  title            String
+  background       String
+  question         String
+  submissionFormat String
+  criteria         String
+  difficulty       String
+  estimatedTime    Int
+  skills           String
+  points           Int       @default(50)
+  deadline         DateTime?
+  isActive         Boolean   @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  lessons          ChallengeLesson[]
+  submissions      Submission[]
+}
+
+model ChallengeLesson {
+  challengeId String
+  lessonId    String
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  lesson      Lesson    @relation(fields: [lessonId], references: [id])
+
+  @@id([challengeId, lessonId])
+}
+
+model Submission {
+  id              String   @id @default(cuid())
+  userId          String
+  challengeId     String
+  title           String
+  content         String
+  targetUser      String
+  approach        String
+  reasoning       String
+  references      String?
+  status          String   @default("submitted")
+  feedbackGood    String?
+  feedbackImprove String?
+  feedbackNext    String?
+  feedbackScore   Int?
+  pointsEarned    Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id])
+  challenge       Challenge @relation(fields: [challengeId], references: [id])
+}
