@@ -82,7 +82,7 @@ export default function LoginPage() {
 
         <div className="mt-6 p-4 bg-blue-50 rounded-xl">
           <p className="text-xs font-semibold text-blue-700 mb-2">デモアカウント</p>
-          <p className="text-xs text-blue-600">kai@example.com / demo123</p>
+          <p className="text-xs text-blue-600">demo@bizquest.jp / demo123</p>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-4">
