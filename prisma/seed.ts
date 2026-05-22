@@ -466,34 +466,9 @@ D) Company（自社）
     },
   });
 
-  const challenge5 = await prisma.challenge.upsert({
-    where: { id: "challenge-earphone" },
-    update: {},
-    create: {
-      id: "challenge-earphone",
-      title: '低価格イヤホンを「懐かしい音」として売るには？',
-      background:
-        '「SoundRetro 2000」は、音質が高いわけではないが、2000年代のMDプレーヤーや初期iPodのような「こもった音・懐かしい音感」が特徴の2,980円のイヤホン。Z世代（15〜25歳）を中心に、「エモい」「あの頃の音がする」という口コミが一部で広がっている。しかし、Amazonや量販店では音質で評価されるため売れていない。',
-      question:
-        "SoundRetro 2000の「懐かしい音」という特徴を強みとして、どのようなマーケティング戦略でZ世代にアプローチするか提案してください。",
-      submissionFormat: "400〜700文字の提案文",
-      criteria: JSON.stringify([
-        "ポジショニング：音質競争を避けた独自の価値軸を作れているか",
-        "感情訴求：懐かしさ・エモさを効果的に活用しているか",
-        "チャネル：Z世代にリーチできる適切なチャネルを選んでいるか",
-        "独自性：他の安価イヤホンとの差別化が明確か",
-      ]),
-      difficulty: "intermediate",
-      estimatedTime: 45,
-      skills: JSON.stringify(["マーケティング", "ブランディング", "感情訴求", "Z世代"]),
-      points: 60,
-      deadline: new Date("2026-07-31"),
-    },
-  });
-
   // Link lessons to challenges
   await prisma.challengeLesson.deleteMany({
-    where: { challengeId: { in: ["challenge-cafe", "challenge-app", "challenge-restaurant", "challenge-event", "challenge-earphone"] } },
+    where: { challengeId: { in: ["challenge-cafe", "challenge-app", "challenge-restaurant", "challenge-event"] } },
   });
 
   await prisma.challengeLesson.createMany({
@@ -506,8 +481,6 @@ D) Company（自社）
       { challengeId: challenge3.id, lessonId: lesson2.id },
       { challengeId: challenge3.id, lessonId: lesson5.id },
       { challengeId: challenge4.id, lessonId: lesson1.id },
-      { challengeId: challenge5.id, lessonId: lesson2.id },
-      { challengeId: challenge5.id, lessonId: lesson3.id },
     ],
   });
 
